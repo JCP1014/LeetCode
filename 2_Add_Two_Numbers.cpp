@@ -13,40 +13,32 @@ struct ListNode
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution
-{
+class Solution {
 public:
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
-    {
-        ListNode *ans = new ListNode();
-        ListNode *curr = ans;
-        int carry = 0;
-        int sum = 0;
-
-        while (l1 != NULL || l2 != NULL)
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *dummy = new ListNode(0);
+        ListNode *curr = dummy;
+        int sum, carry = 0;
+        
+        while(l1 || l2)
         {
-            sum = 0;
-            sum += carry;
-            if (l1 != NULL)
-            {
-                sum += l1->val;
-                l1 = l1->next;
-            }
-            if (l2 != NULL)
-            {
-                sum += l2->val;
-                l2 = l2->next;
-            }
-            carry = sum / 10;
+            if (!l1)
+                sum = l2->val + carry;
+            else if (!l2)
+                sum = l1->val + carry;
+            else
+                sum = l1->val + l2->val + carry;
+            
             curr->next = new ListNode(sum % 10);
+            carry = sum / 10;
+            l1 = (l1) ? l1->next : l1;
+            l2 = (l2) ? l2->next : l2;
             curr = curr->next;
         }
         if (carry)
-        {
             curr->next = new ListNode(carry);
-        }
-
-        return ans->next;
+        return dummy->next;
+        
     }
 };
 
